@@ -1,7 +1,7 @@
 ---
 name: eve-overseer
 description: |
-  eve-overseer (Entity Velocity Engine — Overseer)
+  eve-overseer (Ecosystem Visibility Engine)
   When to use: When starting a Foundry project or needing an architecture map, drift detection, or a clear operational roadmap.
   What it does: The Commander. It scans your entire Foundry environment, detects configuration drift across all platform layers, and dictates exact next steps to get your project back on track.
 ---
