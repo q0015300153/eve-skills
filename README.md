@@ -96,6 +96,13 @@ flowchart TD
 
 ---
 
+## Traditional Development Version
+
+Looking for the same skill suite for **general software development** (web systems, CLI tools, databases, servers, etc.) without Palantir Foundry?
+A platform-agnostic port is maintained at **[q0015300153/nova-skills](https://github.com/q0015300153/nova-skills)**.
+
+---
+
 ## Contributing
 
 Pull requests are welcome. Each skill lives in `skills/<skill-name>/SKILL.md` and is fully self-contained — no cross-skill dependencies at runtime.
