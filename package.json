@@ -1,0 +1,30 @@
+{
+  "name": "ai-skills-palantir-foundry",
+  "version": "1.0.0",
+  "description": "EVE Skill Suite — 8 specialized AIP Skills for the full Palantir Foundry project lifecycle",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/q0015300153/ai-skills-palantir-foundry.git"
+  },
+  "homepage": "https://github.com/q0015300153/ai-skills-palantir-foundry#readme",
+  "bugs": {
+    "url": "https://github.com/q0015300153/ai-skills-palantir-foundry/issues"
+  },
+  "keywords": [
+    "claude-code",
+    "skills",
+    "palantir",
+    "foundry",
+    "aip",
+    "ontology",
+    "workshop",
+    "osdk"
+  ],
+  "files": [
+    "skills/"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
