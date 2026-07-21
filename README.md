@@ -18,7 +18,7 @@
 ## Installation
 
 ```bash
-npx skills add github:q0015300153/ai-skills-palantir-foundry
+npx skills add github:q0015300153/eve-skills
 ```
 
 **Verify** the installation:
@@ -32,19 +32,19 @@ All 8 `eve-*` skills should appear in the output.
 **Update** to the latest version:
 
 ```bash
-npx skills update ai-skills-palantir-foundry
+npx skills update eve-skills
 ```
 
 **Remove:**
 
 ```bash
-npx skills remove ai-skills-palantir-foundry
+npx skills remove eve-skills
 ```
 
 **Alternative — manual clone** (if you prefer to manage the files yourself):
 
 ```bash
-git clone https://github.com/q0015300153/ai-skills-palantir-foundry.git
+git clone https://github.com/q0015300153/eve-skills.git
 ```
 
 Then paste the content of any `skills/<skill-name>/SKILL.md` into your Foundry AIP Logic / Chatbot Studio system prompt configuration.

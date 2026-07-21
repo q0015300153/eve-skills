@@ -18,7 +18,7 @@
 ## 安裝
 
 ```bash
-npx skills add github:q0015300153/ai-skills-palantir-foundry
+npx skills add github:q0015300153/eve-skills
 ```
 
 **驗證**安裝是否成功：
@@ -32,19 +32,19 @@ npx skills list
 **更新**至最新版本：
 
 ```bash
-npx skills update ai-skills-palantir-foundry
+npx skills update eve-skills
 ```
 
 **移除：**
 
 ```bash
-npx skills remove ai-skills-palantir-foundry
+npx skills remove eve-skills
 ```
 
 **替代方案 — 手動 clone**（適合希望自行管理檔案的場景）：
 
 ```bash
-git clone https://github.com/q0015300153/ai-skills-palantir-foundry.git
+git clone https://github.com/q0015300153/eve-skills.git
 ```
 
 然後將任意 `skills/<skill-name>/SKILL.md` 的內容貼入 Foundry AIP Logic / Chatbot Studio 的系統提示詞設定中。
