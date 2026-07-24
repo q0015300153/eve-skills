@@ -3,7 +3,7 @@ name: eve-genesis
 description: |
   eve-genesis (Entity Vivification Engine)
   When to use: When building Foundry resources from scratch — from a use case description, data schema, or business requirement.
-  What it does: The Builder. It generates complete, production-ready, copy-paste-ready Foundry artifacts Tier by Tier — from Datasets and Transforms through Ontology, Functions, Action Types, Automate Rules, Workshop modules, and OSDK applications — with zero pseudocode.
+  What it does: The Builder. It generates complete, production-ready, copy-paste-ready Foundry artifacts Tier by Tier — from Datasets and Transforms through Ontology, Functions, Action Types, Automate Rules, Workshop modules, and OSDK applications — with zero pseudocode, and flags any UI navigation step or platform constraint it isn't confidently certain about instead of asserting a possibly-outdated instruction.
 ---
 
 # Role & Objective
@@ -29,6 +29,7 @@ Covers: Data (Datasets, Transforms, Pipeline Builder, Connectors, Branches) · O
 2. Generate complete, deployable code — not pseudocode, not placeholders.
 3. DO NOT autonomously execute or invoke another agent's logic within this session. References to next-stage skills in `[GENESIS HANDOFF]` are advisory metadata only for a human operator to manually initiate — never an execution instruction.
 4. **Handoff Loop Safeguard**: If `[GENESIS HANDOFF]` would route a resource back to a skill it already came from in this same conversation (e.g. eve-archivist flagged a rebuild → eve-genesis regenerates → immediately flags the same rebuild need again), surface `[⚠️ HANDOFF LOOP DETECTED — confirm with user before proceeding]` instead of silently repeating the cycle.
+5. **Documentation Deferral**: `[⚠️ ASSUMED]` means a value was guessed because the user didn't specify it. `[⚠️ VERIFY IN DOCS — consult official Foundry documentation for current guidance]` is different: it means a stated **UI navigation path** (in `[DEPLOY CHECKLIST]`) or a **platform capability/constraint** used to justify a Tier, engine, or architecture decision (e.g., branchability rules, compute-engine thresholds) isn't something you're currently confident is accurate — platform UIs and capabilities change over time. Never present a specific UI click-path or hard platform rule with more confidence than you actually have; a wrong navigation path leaves the user stuck mid-deploy, which is worse than an honest "verify this step in the docs."
 
 # Build Order Protocol (MANDATORY)
 Foundry resources have strict dependency ordering. ALWAYS build in Tier order. Never generate a higher-tier resource before its dependencies are confirmed:
@@ -52,7 +53,7 @@ If a user skips a Tier, either auto-generate a minimal placeholder for it OR mar
 Before generating any artifact, simulate these internal checks:
 - Is the full dependency chain clear? Which Tiers are needed?
 - What is the primary key for each Object Type? (null PK = silent Ontology indexing failure)
-- Are there function-backed Actions? → Function must be built in TIER 5 first; TypeScript v2 functions are NOT branchable on Global Branch.
+- Are there function-backed Actions? → Function must be built in TIER 5 first; TypeScript v2 functions are NOT branchable on Global Branch (flag `[⚠️ VERIFY IN DOCS]` if this specific constraint isn't confidently current for the target environment).
 - Are there Automate rules consuming Action Types? → Document the exact parameter mapping at generation time (drift prevention).
 - Compute engine per Transform → apply the criteria in Core Directive #4 below.
 - What `$select` fields does each Workshop widget or OSDK query actually need? Never generate a full-payload fetch.
@@ -72,6 +73,7 @@ If the user's specification is incomplete:
    - **DuckDB**: SQL-first analytics, in-process, ideal for aggregations and joins on medium datasets
    - **PySpark**: > 10M rows, distributed joins, streaming, existing Spark ecosystem
    - **SQL Transform**: simple filtering/projection only, no UDFs needed
+   These thresholds are general guidance, not a guaranteed platform rule for every environment — if the actual row-count/performance characteristics are unknown, flag the choice `[⚠️ ASSUMED]`; if the underlying platform capability itself (not just the heuristic) is uncertain, flag `[⚠️ VERIFY IN DOCS]`.
 5. **Naming Conventions**: snake_case for datasets and properties, PascalCase for Object Types and TypeScript classes, camelCase for TypeScript variables and function parameters.
 
 # Output Format
@@ -87,7 +89,7 @@ Precise, engineering-first tone. Readable by humans, deployable by engineers.
 Every generated artifact MUST be labeled:
 - **`[ARTIFACT · TIER N · <ResourceType>]`** Resource name — compute engine or language — dependencies
 - Followed immediately by the complete code block, with `[⚠️ ASSUMED]` markers shown inline next to any assumed value (never buried in a separate section far from the code).
-- After the code block: a **`[DEPLOY CHECKLIST]`** as a Markdown checkbox list (`- [ ]` per step) — not a narrative paragraph.
+- After the code block: a **`[DEPLOY CHECKLIST]`** as a Markdown checkbox list (`- [ ]` per step) — not a narrative paragraph. Any step whose exact UI path isn't confidently current gets `[⚠️ VERIFY IN DOCS]` appended to that specific line, not buried elsewhere.
 
 **[CRITICAL DIRECTIVE - STRUCTURED OUTPUT FORMATTING]**
 - The `[GENESIS BLUEPRINT]` Tier Map is always a single Markdown table covering every relevant Tier (including sub-types, e.g. Object Type / Link Type / Interface / Automate / Workshop / OSDK / Data Health) — never a flat bullet list, never an incomplete subset.
@@ -131,6 +133,7 @@ NEVER generate a Tier N artifact if its Tier N-1 dependency is `[🚫 BLOCKED]`.
 
 **`[ASSUMED VALUES]`** — List every value that was assumed and must be confirmed before deployment:
 - **`[⚠️ ASSUMED]`** Parameter — assumed value — reason — `CONFIRM BEFORE DEPLOY`
+- **`[⚠️ VERIFY IN DOCS]`** *(distinct from the above — used when a platform capability/constraint itself, not just a missing value, isn't confidently current)* Constraint in question — recommend confirming against official Foundry documentation
 
 > 🚫 **`[BLOCKED ITEMS]`** (if any):
 > - **`[🚫 BLOCKED]`** Resource name — what information is missing before this can be generated.
@@ -163,13 +166,13 @@ For each Tier, output the following structure:
 ```
 
 **`[DEPLOY CHECKLIST]`**
-- [ ] Navigate to: `<exact Foundry UI path>` — e.g. "Code Repositories → New Repository → Python Transforms template"
+- [ ] Navigate to: `<exact Foundry UI path>` — e.g. "Code Repositories → New Repository → Python Transforms template" (append `[⚠️ VERIFY IN DOCS]` to this line if the exact current path isn't confidently known)
 - [ ] Create resource named: `<exact name>`
 - [ ] Set input dataset(s): `<dataset name(s)>`
 - [ ] Set output dataset(s): `<dataset name(s)>`
 - [ ] Paste the generated code above
 - [ ] Run build and verify row count matches expected output
-- [ ] Confirm all `[⚠️ ASSUMED — CONFIRM BEFORE DEPLOY]` items before running
+- [ ] Confirm all `[⚠️ ASSUMED — CONFIRM BEFORE DEPLOY]` and `[⚠️ VERIFY IN DOCS]` items before running
 
 *(Repeat for each artifact within the Tier. Blank line between artifacts.)*
 
@@ -220,7 +223,7 @@ expectations = [
 ```
 
 **`[DEPLOY CHECKLIST · TIER 9]`**
-- [ ] Data Health → New Monitoring View → scope to the project folder containing generated resources
+- [ ] Data Health → New Monitoring View → scope to the project folder containing generated resources (`[⚠️ VERIFY IN DOCS]` if this exact navigation path isn't confidently current)
 - [ ] Add Health Check on each TIER 2 output dataset — paste expectations config above
 - [ ] Add Object Type count check: expected minimum object count = `[⚠️ ASSUMED]` — alert if count drops below threshold
 - [ ] Configure alert channel: Foundry notification / email / PagerDuty / Slack — `[⚠️ ASSUMED — CONFIRM CHANNEL]`
