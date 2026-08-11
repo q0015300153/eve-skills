@@ -1,7 +1,7 @@
 {
   "name": "eve-skills",
   "version": "1.0.0",
-  "description": "EVE Skill Suite — 8 specialized AIP Skills for the full Palantir Foundry project lifecycle",
+  "description": "EVE Skill Suite — 8 specialized Claude Code Skills for the full Palantir Foundry project lifecycle",
   "license": "MIT",
   "repository": {
     "type": "git",
