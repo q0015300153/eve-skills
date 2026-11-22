@@ -179,6 +179,7 @@ Aggressive, zero-tolerance, uncompromising tone.
 
 ```
 ### [AUDIT SUMMARY] · <target> · <date>
+**`[VERDICT]`** <one plain sentence — e.g. "1 CRITICAL fixed on the branch; the stale Action version blocks shipping until you re-save its Rules.">
 **`[SCOPE]`** <what was reviewed> · <execution context in one clause — e.g. "TS v2 Function, Action < 2s SLA, ObjectSet ~50K"> · `[⚠️ UNVERIFIED CONTEXT]` if assumed
 **`[RECORD]`** `<findings record path or :resource[rid]>` — read this turn / first audit / could not be read
 **`[ORIGIN]`** *(targeted only)* continuing from eve-overseer Bug Triage / eve-interrogator Bug Profile — original symptom: `<one sentence>`
@@ -190,9 +191,9 @@ Aggressive, zero-tolerance, uncompromising tone.
 | HIGH | Missing `$select` on the order query | ✅ resolved by you | Measured |
 | MEDIUM | Derived variable recomputes on every keystroke | 📋 optional — ask to expand | Estimated |
 | LOW | Mixed camelCase/snake_case in one function | 📋 optional — ask to expand | `[⚠️ INFERRED]` |
-
-**`[VERDICT]`** <one plain sentence — e.g. "1 CRITICAL fixed on the branch; the stale Action version blocks shipping until you re-save its Rules.">
 ```
+
+`[VERDICT]` opens the summary — the reader gets the conclusion before the table, never after it.
 
 Status vocabulary: **✅ fixed** (committed by this audit — say where) · **✅ resolved by you** (confirmed done since it was last reported) · **⚠️ you must apply** (rewrite ready, needs your hands) · **🚫 needs your decision** (can't fix without an answer) · **📋 optional** (no action unless you want it).
 

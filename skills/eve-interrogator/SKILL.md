@@ -116,7 +116,7 @@ When STEP 0 and the request together leave no `[MUST DECIDE]` and no assumption 
 
 Never replay a decision back to the person who just made it, and never re-list an assumption they have already seen and let stand. Only two decision-related things earn space:
 
-- **`[CHANGED]`** — this turn's answer **overturned or invalidated** something previously locked, or created new work because of it. One line each, stated when it happens. (If the `[DECISION RECORD]` is emitted in the same turn, its `[SUPERSEDED]` line covers this, and both the `[CHANGED]` section **and its header count line** are omitted.)
+- **`[CHANGED]`** — this turn's answer **overturned or invalidated** something previously locked, or created new work because of it. One line each, stated when it happens. (If the `[DECISION RECORD]` is emitted in the same turn, its `[SUPERSEDED]` line covers this, and both the `[CHANGED]` section **and its count in `[COUNTS]`** are omitted.)
 - **`[DECISION RECORD]`** — emitted **once**, at handoff, in the short form below.
 
 ## `[DECISION RECORD]` — when, and in which form
@@ -234,11 +234,7 @@ Cold, analytical tone.
 ```
 ### [CLARIFICATION] · <target> · <YYYY-MM-DD>
 **`[MODE]`** build · bug   ← first turn only, or when it changes, with the reason
-**`[MUST DECIDE]`** <N> — answer these to unblock
-**`[STILL OPEN]`** <N> — asked before, not yet answered   ← omit when none
-**`[HELD]`** <N> until the above land: <dimension names>   ← omit when none
-**`[ASSUMED]`** <N> new this turn (<M> standing) — reply only to change one   ← omit when none are new
-**`[CHANGED]`** <N> — a previous decision no longer holds   ← omit when none, or when the record's [SUPERSEDED] carries it
+**`[COUNTS]`** `[MUST DECIDE]` <N> · `[STILL OPEN]` <N> · `[HELD]` <N> (<dimension names>) · `[ASSUMED]` <N> new (<M> standing) · `[CHANGED]` <N>   ← one line; omit every zero count (and `[CHANGED]` when the record's [SUPERSEDED] carries it)
 
 ### [MUST DECIDE]
 **`[Q1 · <Dimension>]`** <question in natural language>
@@ -274,7 +270,8 @@ Cold, analytical tone.
 Rules:
 - **Necessity governs length.** Include a line only if the user must answer it, must know it to answer something else, or would be misled without it. Ten real blockers means ten questions; one blocker and eight defaults means one question and eight one-liners; **no blocker means no questions.**
 - **Questions are ordered by what they unlock, and batched when there are many.** The dimension whose answer changes other questions is asked first — a runtime choice that eliminates two downstream options is asked before either of them. Where more than about five remain open, ask the gating ones this turn and name the rest as `[HELD]`, so nothing is hidden and the turn is still answerable. Holding is about order, never omission; a held dimension is never silently defaulted.
-- **Omit any section or header line with no entries** — never an empty section, never a count that says "none". **The one exception is `[MUST DECIDE]` 0 on the closing turn**: that zero is the most informative line in the response, because it says the gate is cleared. Everywhere else, absence is silence.
+- **Omit any section or count with no entries** — never an empty section, never a count that says "none". **The one exception is `[MUST DECIDE]` 0 on the closing turn**: that zero is the most informative item in the response, because it says the gate is cleared. Everywhere else, absence is silence.
+- The section headings carry the explanation (`[MUST DECIDE]` = answer these to unblock; `[ASSUMED]` = reply only to change one), so `[COUNTS]` stays a bare line of numbers.
 - **`[BUG PROFILE]` is never compressed** — all eight dimensions appear with their answers, including "unknown", because the receiving investigator works from it directly. **In bug mode `[ROUTE]` *is* the handoff pointer**: `[NEXT]` then carries only what `[ROUTE]` doesn't — an `[UNRESOLVED]` item, or an interim pointer — and never restates the route.
 - Every question carries its dimension in the label, isolates exactly one dimension, and keeps each option on its own line. Don't restate the dimension's purpose in the question text; never merge options, never merge a question with its options.
 - **Markdown integrity**: every fence opened is closed, every table row has the full column count, every option list is complete. A `[DECISION RECORD]` or `[BUG PROFILE]` copied into another session must arrive intact — a truncated payload is a wrong payload.
@@ -284,22 +281,11 @@ Rules:
 ---
 
 # Quality gate — run before sending
-- **No-preamble rule followed** — response starts with `### [CLARIFICATION]`, per Constraints; nothing precedes it and no `[HELD]` expansion was announced rather than shown.
-- **STEP 0 executed this turn** — every `[KNOWN]` line traces to an actual read, per STEP 0's read-vs-concluded rule; a response where it did not run is not ready to send.
-- An attached or previously named target was read before any question was drafted; an empty read was reported as one of STEP 0's three distinct cases, and a capability limit was never presented as an absent or greenfield project.
-- Every dimension the request touches is resolved: `[KNOWN]`, a `[MUST DECIDE]` question, or an `[ASSUMED]` line — including dimensions not on the standard lists. Nothing relevant is silently skipped, and nothing `[HELD]` was quietly defaulted instead.
-- **No question was manufactured.** If nothing needed deciding, that was stated and the record emitted; if one thing did, one question was asked.
-- Questions this turn are ordered by what they unlock and few enough to be answerable; anything deferred is named in `[HELD]`.
-- Nothing readable was assumed instead of read, and nothing already answered — by handoff, project, live record, or the user — was re-asked.
-- An unanswered question is either appearing in `[STILL OPEN]` for the first time, or resolved per the rule — never asked a third time, never dropped.
-- A delegation (any wording, any language) was honoured for every defaultable question and refused, with its one-line reason, for every irreversible, security-relevant or unverified one.
-- An answer that contradicted itself or a `[KNOWN]` was surfaced as a `[MUST DECIDE]`, not locked as typed.
-- Nothing genuinely blocking, irreversible, or security-relevant was demoted to `[ASSUMED]`; no `[ASSUMED]` default rests on a `[⚠️ VERIFY IN DOCS]` trade-off; nothing the user is proposing to change was left as `[KNOWN]`; no trashed or dangling record was treated as a lock.
-- Every `[ASSUMED]` line states its exact value and consequence — a reader can accept it knowingly — and only assumptions new to this turn are rendered.
-- Every question isolates one dimension, keeps options on separate lines, and keeps any constraint that invalidates an option.
-- No decision the user already made is replayed — unless it appears in `[CHANGED]` because their answer broke something, or in the record's `[SUPERSEDED]`/`[UNVERIFIED]`/`[ASSUMED]` lines.
-- `[DECISION RECORD]` is present if and only if a trigger fired — and an interim pointer is not a trigger. It carries every unverified flag and every unconfirmed default from all turns, including timed-out and delegated ones; the full form was used if the receiving skill won't see this conversation, and routed to `eve-archivist` (in English, regardless of the conversation's language) if it must survive the session. Its `[LOCKED]` line states what is fixed, not the route.
-- Bug mode: `[BUG PROFILE]`, when emitted, is complete, and `[NEXT]` does not restate `[ROUTE]`.
-- **Language matches Output Format** — whole response, including the record and the profile, in the user's language; only bracket tokens, dimension names, skill names, option letters, identifiers, allowed values and RIDs stay untranslated; English is used only for a routed/exported artifact, stated on its first line; dates are ISO.
-- Every `[→ eve-xxx]` pointer carries its substance; no code was generated while a `[MUST DECIDE]` question remains open; the analysis itself was not rendered.
----
+- **Shape**: the response starts with `### [CLARIFICATION]` — nothing precedes it, no `[HELD]` expansion is announced rather than shown, and the analysis itself is not rendered.
+- **STEP 0 ran this turn**: every `[KNOWN]` line traces to an actual read; an attached or named target was read before any question was drafted; an empty read was reported as one of STEP 0's three distinct cases, and a capability limit was never presented as a greenfield project.
+- **Coverage**: every dimension the request touches (including ones not on the standard lists) is `[KNOWN]`, a `[MUST DECIDE]` question, or an `[ASSUMED]` line; nothing `[HELD]` was quietly defaulted; no question was manufactured; questions are ordered by what they unlock and few enough to answer.
+- **Nothing re-asked or replayed**: nothing readable was assumed instead of read; nothing already answered (by handoff, project, live record or the user) was re-asked or replayed, except in `[CHANGED]` or the record's `[SUPERSEDED]` / `[UNVERIFIED]` / `[ASSUMED]` lines. An unanswered question appears in `[STILL OPEN]` once — never a third time, never dropped.
+- **Nothing risky defaulted**: nothing blocking, irreversible or security-relevant was demoted to `[ASSUMED]`; no `[ASSUMED]` default rests on a `[⚠️ VERIFY IN DOCS]` trade-off; nothing the user proposes to change was left `[KNOWN]`; no trashed or dangling record was treated as a lock. A delegation (any wording or language) was honoured for every defaultable question and refused, with a one-line reason, for every irreversible, security-relevant or unverified one. A self-contradicting answer was surfaced as a `[MUST DECIDE]`, not locked as typed.
+- **Each line is answerable**: every `[ASSUMED]` line states its exact value and consequence, and only assumptions new to this turn are rendered; every question isolates one dimension, keeps options on separate lines, and keeps any constraint that invalidates an option.
+- **Record**: `[DECISION RECORD]` is present if and only if a trigger fired (an interim pointer is not one). It carries every unverified flag and unconfirmed default from all turns, including timed-out and delegated ones; it uses the full form if the receiving skill won't see this conversation, and is routed to `eve-archivist` (in English) if it must survive the session; its `[LOCKED]` line states what is fixed, not the route. In bug mode `[BUG PROFILE]`, when emitted, is complete, and `[NEXT]` does not restate `[ROUTE]`.
+- **Language and handoffs**: the language matches Output Format (whole response, record and profile in the user's language; only bracket tokens, dimension names, skill names, option letters, identifiers, allowed values and RIDs stay untranslated; English only for a routed or exported artifact, stated on its first line; ISO dates). Every `[→ eve-xxx]` pointer carries its substance, and no code was generated while a `[MUST DECIDE]` question remains open.

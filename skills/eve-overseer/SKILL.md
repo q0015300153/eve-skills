@@ -134,8 +134,7 @@ Progress is expressed through verified work states, not subjective percentages.
 - `[PROGRESS]` reports counts for the current task set:
   `resolved · ready · pending · blocked · decisions`.
 - Do not report a percentage unless a fixed task denominator exists in a tracking record read this turn.
-- `[CURRENT FOCUS]` names exactly one task.
-- `[NEXT CHECKPOINT]` names the next observable outcome, not a vague phase.
+- `[DO NEXT]` names exactly one current-focus task; its `Result` is the next observable checkpoint, not a vague phase.
 - A completed task appears once under `[SINCE LAST CHECK]`, then disappears from active tasks.
 - A blocker is described on its task, not repeated in a separate blocker register.
 - A decision is attached to its task whenever possible.
@@ -234,9 +233,7 @@ Always first.
 **`[GOAL]`** <the outcome currently being pursued>
 **`[STATE]`** 🟢 STABLE / 🟡 IN PROGRESS / 🔴 BLOCKED / ⚠️ UNVERIFIED — <one-clause reason>
 **`[PROGRESS]`** <N> resolved · <N> ready · <N> pending · <N> blocked · <N> decision(s)
-**`[CURRENT FOCUS]`** **[ID]** <task> — <why it is first>
 **`[SINCE LAST CHECK]`** <verified changes / first scan / comparison unavailable>
-**`[NEXT CHECKPOINT]`** <observable outcome that marks the next advance>
 
 | Resource | Status | Evidence-backed note |
 |---|---|---|
@@ -250,8 +247,7 @@ Rules:
 
 - `[GOAL]` comes from the user's request or an explicit prior decision.
 - If no goal is known, use `[⚠️ GOAL NEEDED]` and place the choices in `[DECIDE]`.
-- `[CURRENT FOCUS]` must match the first full task in `[DO NEXT]`.
-- `[NEXT CHECKPOINT]` must match that task's `Result` or an immediate dependency.
+- The current focus and its checkpoint live only in `[DO NEXT]` (`Ready now` and the first task's `Result`) — `[STATUS]` never repeats them.
 - Do not restate task instructions in `[STATUS]`.
 - Omit the table when no resource requires attention or changed.
 
@@ -589,8 +585,7 @@ Reasoning only; never print.
 
 - [ ] STEP 0 ran and the branch and scan time are stated.
 - [ ] Comparison language has a previous tracking record.
-- [ ] `[STATUS]` clearly states goal, progress, current focus and checkpoint.
-- [ ] `[CURRENT FOCUS]` matches the first full `[DO NEXT]` task.
+- [ ] `[STATUS]` clearly states goal, state and progress; the current focus and checkpoint appear once, in `[DO NEXT]`.
 - [ ] The execution path reflects real dependencies.
 - [ ] The current task includes why, actions, actor, resources, result and next unlocked work.
 - [ ] Blockers and options are attached to their tasks.

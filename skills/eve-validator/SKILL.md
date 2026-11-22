@@ -176,7 +176,7 @@ NEVER output a section to fill space, and never output one that only rephrases a
 **`[SUITE]`** :resource[repo] — `tests/<name>.test.ts` — <N> cases
 **`[GATE RECORD]`** read this turn — :resource[repo] `tests/GATE.md` — <N> cleared, <N> accepted risks   ← or: `no record exists — first gate evaluation, all items unevaluated` / `could not be read — accepted risks unknown, gate reported as 🔴`
 **`[COVERAGE]`** minimum chaos triad met for all components (null-propagation · empty-set · version-drift) — or: `<component>` missing `<which>`
-**`[PASSED]`** ✅ 12 — null injection ×3, empty ObjectSet ×2, schema drift ×2, stale version ×2, Automate binding ×2, permission boundary ×1 — all verified by execution
+**`[PASSED]`** by type — null injection ×3, empty ObjectSet ×2, schema drift ×2, stale version ×2, Automate binding ×2, permission boundary ×1 — all verified by execution
 
 | Test ID | Attack Type | Severity | Result | Evidence |
 |---|---|---|---|---|
